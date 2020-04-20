@@ -1,0 +1,9 @@
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Debug\CarCallout.net.dll
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Debug\CarCallout.net.pdb
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Debug\CalloutAPI.net.dll
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Debug\CitizenFX.Core.dll
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Debug\CarCallout.csprojAssemblyReference.cache
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Debug\CarCallout.csproj.CoreCompileInputs.cache
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Debug\CarCallout.csproj.CopyComplete
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Debug\CarCallout.net.dll
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Debug\CarCallout.net.pdb
