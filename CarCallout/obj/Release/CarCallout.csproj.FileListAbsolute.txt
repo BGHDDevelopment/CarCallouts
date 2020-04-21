@@ -1,9 +1,9 @@
-C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CarCallout.net.dll
-C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CarCallout.net.pdb
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CalloutAPI.net.dll
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CitizenFX.Core.dll
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallout.csprojAssemblyReference.cache
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallout.csproj.CoreCompileInputs.cache
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallout.csproj.CopyComplete
-C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallout.net.dll
-C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallout.net.pdb
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CarCallouts.net.dll
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CarCallouts.net.pdb
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallouts.net.dll
+C:\Users\USER\RiderProjects\CarCallout\CarCallout\obj\Release\CarCallouts.net.pdb

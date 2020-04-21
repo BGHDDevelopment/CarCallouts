@@ -8,14 +8,13 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.3", Probability.Medium)]
-    public class ReverseCarCallout : Callout
+    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.3", Probability.High)]
+    public class SlowDriver : Callout
     {
         private Vehicle car;
         Ped driver;
-        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "seashark2", "seashark", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
 
-        public ReverseCarCallout()
+        public SlowDriver()
         {
 
             Random rnd = new Random();
@@ -23,8 +22,8 @@ namespace CarCallout
             float offsetY = rnd.Next(100, 700);
 
             InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
-            ShortName = "Car Driving in Reverse";
-            CalloutDescription = "A car is driving in reverse.";
+            ShortName = "Slow Driver";
+            CalloutDescription = "A car is driving at very slow speeds causing traffic jams.";
             ResponseCode = 3;
             StartDistance = 250f;
         }
@@ -32,20 +31,25 @@ namespace CarCallout
         public override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 12f, 1923);
+            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 2f, 387);
             car.AttachBlip();
         }
+
+        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "seashark2", "seashark", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
         public async override Task Init()
         {
+            
             OnAccept();
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(Hash, Location);
-            Notify("~r~[CarCallouts] ~y~Suspect is driving a " + cartype);
+            driver = await SpawnPed(GetRandomPed(), Location + 2);
+            driver.SetIntoVehicle(car, VehicleSeat.Driver);
+
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
+            Notify("~r~[CarCallouts] ~y~Suspect is driving a " + cartype);
         }
         public override void OnCancelBefore()
         {

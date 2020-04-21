@@ -8,14 +8,13 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.3", Probability.Medium)]
-    public class ReverseCarCallout : Callout
+    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.3", Probability.Low)]
+    public class OversizedCar : Callout
     {
         private Vehicle car;
         Ped driver;
-        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "seashark2", "seashark", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
 
-        public ReverseCarCallout()
+        public OversizedCar()
         {
 
             Random rnd = new Random();
@@ -23,27 +22,25 @@ namespace CarCallout
             float offsetY = rnd.Next(100, 700);
 
             InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
-            ShortName = "Car Driving in Reverse";
-            CalloutDescription = "A car is driving in reverse.";
-            ResponseCode = 3;
+            ShortName = "Oversized Vehicle";
+            CalloutDescription = "A oversized car is causing issues.";
+            ResponseCode = 2;
             StartDistance = 250f;
         }
 
         public override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 12f, 1923);
+            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 15f, 525116);
             car.AttachBlip();
         }
         public async override Task Init()
         {
             OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
-            Random random = new Random();
-            string cartype = carList[random.Next(carList.Length)];
-            VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
-            car = await SpawnVehicle(Hash, Location);
-            Notify("~r~[CarCallouts] ~y~Suspect is driving a " + cartype);
+            car = await SpawnVehicle(VehicleHash.Dump, Location,12);
+            driver.SetIntoVehicle(car, VehicleSeat.Driver);
+
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }
