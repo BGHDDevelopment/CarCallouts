@@ -8,12 +8,12 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.3", Probability.Medium)]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.4", Probability.Medium)]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;
         Ped driver;
-        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "seashark2", "seashark", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
+        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
 
         public ReverseCarCallout()
         {
@@ -48,8 +48,10 @@ namespace CarCallout
             driver.BlockPermanentEvents = true;
         }
         public override void OnCancelBefore()
-        {
-            car.AttachedBlip.Delete();
+        { 
+            foreach (Blip blip in car.AttachedBlips)
+                if (blip.Exists())
+                    blip.Delete();
         }
         private void Notify(string message)
         {

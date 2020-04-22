@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.3", Probability.High)]
+    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.4", Probability.High)]
     public class SlowDriver : Callout
     {
         private Vehicle car;
@@ -35,7 +35,7 @@ namespace CarCallout
             car.AttachBlip();
         }
 
-        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "seashark2", "seashark", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
+        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "predator", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
         public async override Task Init()
         {
             
@@ -51,9 +51,12 @@ namespace CarCallout
             driver.BlockPermanentEvents = true;
             Notify("~r~[CarCallouts] ~y~Suspect is driving a " + cartype);
         }
+
         public override void OnCancelBefore()
-        {
-            car.AttachedBlip.Delete();
+        { 
+            foreach (Blip blip in car.AttachedBlips)
+                if (blip.Exists())
+                    blip.Delete();
         }
         private void Notify(string message)
         {

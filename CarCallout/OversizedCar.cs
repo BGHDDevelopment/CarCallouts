@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.3", Probability.Low)]
+    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.4", Probability.Low)]
     public class OversizedCar : Callout
     {
         private Vehicle car;
@@ -46,7 +46,11 @@ namespace CarCallout
         }
         public override void OnCancelBefore()
         {
-            car.AttachedBlip.Delete();
+            if (car != null)
+            { 
+                car.AttachedBlip.Delete();
+
+            }
         }
         private void Notify(string message)
         {

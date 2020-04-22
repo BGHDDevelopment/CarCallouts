@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.3", Probability.High)]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.4", Probability.High)]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
@@ -49,8 +49,10 @@ namespace CarCallout
             driver.BlockPermanentEvents = true;
         }
         public override void OnCancelBefore()
-        {
-            car.AttachedBlip.Delete();
+        { 
+            foreach (Blip blip in car.AttachedBlips)
+                if (blip.Exists())
+                    blip.Delete();
         }
         private void Notify(string message)
         {
