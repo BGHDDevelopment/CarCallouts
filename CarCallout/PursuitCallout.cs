@@ -9,7 +9,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
 
-    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.4", Probability.Low)]
+    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.5", Probability.Low)]
     public class PursuitCallout : Callout
     {
         private Vehicle car;

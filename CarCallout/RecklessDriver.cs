@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.4", Probability.High)]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.5", Probability.High)]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
