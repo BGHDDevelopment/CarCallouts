@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Police Car Callout", "BGHDDevelopment", "0.0.5", Probability.Low)]
+    [CalloutProperties("Stolen Police Car Callout", "BGHDDevelopment", "0.0.6", Probability.Low)]
     public class StolenPoliceCar : Callout
     {
         private Vehicle car;
@@ -51,11 +51,9 @@ namespace CarCallout
         }
         public override void OnCancelBefore()
         {
-            if (car != null)
-            { 
-                car.AttachedBlip.Delete();
-
-            }
+            /*foreach (Blip blip in car.AttachedBlips)
+                if (blip.Exists())
+                    blip.Delete();*/
         }
 
         private void Notify(string message)
