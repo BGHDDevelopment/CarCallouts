@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CalloutAPI;
@@ -8,7 +9,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.6", Probability.Medium)]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.7", Probability.Medium)]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;
@@ -33,6 +34,9 @@ namespace CarCallout
             base.OnStart(player);
             API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 12f, 1923);
             car.AttachBlip();
+            dynamic data1 = GetPedData(driver.NetworkId);
+            string firstname = data1.Firstname;
+            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 100);
         }
         public async override Task Init()
         {
@@ -42,21 +46,32 @@ namespace CarCallout
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(Hash, Location);
-            Notify("~r~[CarCallouts] ~y~Suspect is driving a " + cartype);
+            dynamic playerData = GetPlayerData();
+            string displayName = playerData.DisplayName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + "~y~ the suspect is driving a " + cartype);
+            //Driver Data
+            dynamic data = new ExpandoObject();
+            data.alcoholLevel = 0.10;
+            data.drugsUsed = new bool[] {false,false,true};
+            SetPedData(driver.NetworkId,data);
+            
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }
         public override void OnCancelBefore()
-        { 
-            /*foreach (Blip blip in car.AttachedBlips)
-                if (blip.Exists())
-                    blip.Delete();*/
+        {
         }
         private void Notify(string message)
         {
             API.BeginTextCommandThefeedPost("STRING");
             API.AddTextComponentSubstringPlayerName(message);
             API.EndTextCommandThefeedPostTicker(false, true);
+        }
+        private void DrawSubtitle(string message, int duration)
+        {
+            API.BeginTextCommandPrint("STRING");
+            API.AddTextComponentSubstringPlayerName(message);
+            API.EndTextCommandPrint(duration, false);
         }
     }
 }

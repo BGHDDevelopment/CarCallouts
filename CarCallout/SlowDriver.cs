@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CalloutAPI;
@@ -8,7 +10,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.6", Probability.High)]
+    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.7", Probability.High)]
     public class SlowDriver : Callout
     {
         private Vehicle car;
@@ -33,7 +35,12 @@ namespace CarCallout
             base.OnStart(player);
             API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 2f, 387);
             car.AttachBlip();
+            dynamic data1 = GetPedData(driver.NetworkId);
+            string firstname = data1.Firstname;
+            DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 100);
         }
+        
+        List<object> items = new List<object>();
 
         private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};        public async override Task Init()
         {
@@ -46,22 +53,39 @@ namespace CarCallout
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
 
+            //Driver Data
+            dynamic data = new ExpandoObject();
+            data.alcoholLevel = 0.05;
+            object Meth = new {
+                Name = "Bag of meth",
+                IsIllegal = true
+            };
+            items.Add(Meth);
+            data.items = items;
+            data.drugsUsed = new bool[] {true,false,false};
+            SetPedData(driver.NetworkId,data);
+            
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
-            Notify("~r~[CarCallouts] ~y~Suspect is driving a " + cartype);
+            dynamic playerData = GetPlayerData();
+            string displayName = playerData.DisplayName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + "~y~ the suspect is driving a " + cartype);
         }
 
         public override void OnCancelBefore()
-        { 
-            /*foreach (Blip blip in car.AttachedBlips)
-                if (blip.Exists())
-                    blip.Delete();*/
+        {
         }
         private void Notify(string message)
         {
             API.BeginTextCommandThefeedPost("STRING");
             API.AddTextComponentSubstringPlayerName(message);
             API.EndTextCommandThefeedPostTicker(false, true);
+        }
+        private void DrawSubtitle(string message, int duration)
+        {
+            API.BeginTextCommandPrint("STRING");
+            API.AddTextComponentSubstringPlayerName(message);
+            API.EndTextCommandPrint(duration, false);
         }
     }
 }

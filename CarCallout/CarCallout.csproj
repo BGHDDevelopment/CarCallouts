@@ -32,12 +32,13 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="CalloutAPI.net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Reference Include="CalloutAPI.net, Version=0.6.4.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\Desktop\FivePD Dev\CalloutAPI.net.dll</HintPath>
         </Reference>
         <Reference Include="CitizenFX.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\..\Desktop\FivePD Dev\CitizenFX.Core.dll</HintPath>
         </Reference>
+        <Reference Include="Microsoft.CSharp" />
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />

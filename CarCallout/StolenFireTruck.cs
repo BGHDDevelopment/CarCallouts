@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Firetruck Callout", "BGHDDevelopment", "0.0.6", Probability.Low)]
+    [CalloutProperties("Stolen Firetruck Callout", "BGHDDevelopment", "0.0.7", Probability.Low)]
     public class StolenFireTruck : Callout
     {
         private Vehicle car;
@@ -50,10 +50,7 @@ namespace CarCallout
             driver.BlockPermanentEvents = true;
         }
         public override void OnCancelBefore()
-        { 
-            /*foreach (Blip blip in car.AttachedBlips)
-                if (blip.Exists())
-                    blip.Delete();*/
+        {
         }
 
         private void Notify(string message)
@@ -62,6 +59,11 @@ namespace CarCallout
             API.AddTextComponentSubstringPlayerName(message);
             API.EndTextCommandThefeedPostTicker(false, true);
         }
-        
+        private void DrawSubtitle(string message, int duration)
+        {
+            API.BeginTextCommandPrint("STRING");
+            API.AddTextComponentSubstringPlayerName(message);
+            API.EndTextCommandPrint(duration, false);
+        }
     }
 }
