@@ -34,12 +34,12 @@ namespace CarCallout
             StartDistance = 250f;
         }
 
-        public override void OnStart(Ped player)
+        public async override void OnStart(Ped player)
         {
             base.OnStart(player);
             API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 25f, 525116);
             car.AttachBlip();
-            dynamic data1 = GetPedData(driver.NetworkId);
+            dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 100);
         }

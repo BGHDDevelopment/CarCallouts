@@ -34,7 +34,7 @@ namespace CarCallout
             ResponseCode = 3;
             StartDistance = 150f;
         }
-        public override void OnStart(Ped player)
+        public async override void OnStart(Ped player)
         {
             base.OnStart(player);
             dynamic playerData = GetPlayerData();
@@ -48,8 +48,8 @@ namespace CarCallout
             car.AttachBlip();
             API.Wait(6000);
             passenger.Task.FightAgainst(player);
-            dynamic data2 = GetPedData(passenger.NetworkId);
-            dynamic data1 = GetPedData(driver.NetworkId);
+            dynamic data2 = await GetPedData(passenger.NetworkId);
+            dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname2 = data2.Firstname;
             string firstname = data1.Firstname;
             DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 100);

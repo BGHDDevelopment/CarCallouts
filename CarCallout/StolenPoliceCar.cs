@@ -28,7 +28,7 @@ namespace CarCallout
             StartDistance = 250f;
         }
 
-        public override void OnStart(Ped player)
+        public async override void OnStart(Ped player)
         {
             base.OnStart(player);
             API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 30f);
