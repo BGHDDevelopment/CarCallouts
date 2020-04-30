@@ -41,7 +41,7 @@ namespace CarCallout
             car.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 100);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 500);
         }
         public async override Task Init()
         {
@@ -54,7 +54,7 @@ namespace CarCallout
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
             dynamic playerData = GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + "~y~ the suspect is driving a " + cartype);
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
             
             //Driver Data
             dynamic data = new ExpandoObject();

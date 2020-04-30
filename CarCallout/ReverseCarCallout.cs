@@ -36,7 +36,7 @@ namespace CarCallout
             car.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 100);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 500);
         }
         public async override Task Init()
         {
@@ -48,7 +48,7 @@ namespace CarCallout
             car = await SpawnVehicle(Hash, Location);
             dynamic playerData = GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + "~y~ the suspect is driving a " + cartype);
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
             //Driver Data
             dynamic data = new ExpandoObject();
             data.alcoholLevel = 0.10;

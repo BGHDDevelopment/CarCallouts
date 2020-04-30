@@ -44,7 +44,7 @@ namespace CarCallout
             API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 35f);
             API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
             driver.Task.FleeFrom(player);
-            Notify("~o~Officer ~b~" + displayName + " ~o~the driver and passenger are fleeing!");
+            Notify("~o~Officer ~b~" + displayName + ",~o~ the driver and passenger are fleeing!");
             car.AttachBlip();
             API.Wait(6000);
             passenger.Task.FightAgainst(player);
@@ -52,11 +52,11 @@ namespace CarCallout
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname2 = data2.Firstname;
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 100);
-            API.Wait(200);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Do not shoot!", 100);
-            API.Wait(200);
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~To late!", 100);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 500);
+            API.Wait(600);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Do not shoot!", 500);
+            API.Wait(600);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~To late!", 500);
         }
         public async override Task Init()
         {
@@ -72,7 +72,7 @@ namespace CarCallout
             passenger.SetIntoVehicle(car, VehicleSeat.Passenger);
             dynamic playerData = GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + "~y~ the suspects are driving a " + cartype);
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + cartype + "!");
             
             //Driver Data
             dynamic data = new ExpandoObject();

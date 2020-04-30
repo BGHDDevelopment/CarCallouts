@@ -37,7 +37,7 @@ namespace CarCallout
             car.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 100);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 500);
         }
         
         List<object> items = new List<object>();
@@ -69,7 +69,7 @@ namespace CarCallout
             driver.BlockPermanentEvents = true;
             dynamic playerData = GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + "~y~ the suspect is driving a " + cartype);
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
         }
 
         public override void OnCancelBefore()
