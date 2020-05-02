@@ -9,7 +9,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.7", Probability.Medium)]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.8", Probability.Medium)]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;
@@ -36,7 +36,8 @@ namespace CarCallout
             car.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 500);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 5000);
         }
         public async override Task Init()
         {

@@ -10,7 +10,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.7", Probability.High)]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.8", Probability.High)]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
@@ -31,7 +31,7 @@ namespace CarCallout
             ShortName = "Reckless Driver";
             CalloutDescription = "A car is driving recklessly.";
             ResponseCode = 3;
-            StartDistance = 250f;
+            StartDistance = 200f;
         }
 
         public async override void OnStart(Ped player)
@@ -41,7 +41,8 @@ namespace CarCallout
             car.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 500);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 5000);
         }
         public async override Task Init()
         {

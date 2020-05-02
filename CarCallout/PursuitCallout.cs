@@ -13,7 +13,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
 
-    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.7", Probability.Low)]
+    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.8", Probability.Low)]
     public class PursuitCallout : Callout
     {
         private Vehicle car;
@@ -52,11 +52,12 @@ namespace CarCallout
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname2 = data2.Firstname;
             string firstname = data1.Firstname;
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 500);
-            API.Wait(600);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Do not shoot!", 500);
-            API.Wait(600);
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~To late!", 500);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 5000);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Do not shoot!", 5000);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~To late!", 5000);
         }
         public async override Task Init()
         {
