@@ -8,7 +8,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Police Car Callout", "BGHDDevelopment", "0.0.8", Probability.Low)]
+    [CalloutProperties("Stolen Police Car Callout", "BGHDDevelopment", "0.0.9", Probability.Low)]
     public class StolenPoliceCar : Callout
     {
         private Vehicle car;
