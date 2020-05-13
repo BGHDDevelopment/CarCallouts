@@ -9,7 +9,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.11", Probability.Medium)]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.12", Probability.Medium)]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;

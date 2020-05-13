@@ -1,9 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.Data;
 using System.Dynamic;
-using System.Threading;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CalloutAPI;
@@ -13,7 +11,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
 
-    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.11", Probability.Low)]
+    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.12", Probability.Low)]
     public class PursuitCallout : Callout
     {
         private Vehicle car;
@@ -46,6 +44,8 @@ namespace CarCallout
             driver.Task.FleeFrom(player);
             Notify("~o~Officer ~b~" + displayName + ",~o~ the driver and passenger are fleeing!");
             car.AttachBlip();
+            driver.AttachBlip();
+            passenger.AttachBlip();
             API.Wait(6000);
             passenger.Task.FightAgainst(player);
             dynamic data2 = await GetPedData(passenger.NetworkId);
