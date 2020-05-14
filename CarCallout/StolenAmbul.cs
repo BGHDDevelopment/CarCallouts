@@ -10,14 +10,14 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Police Car Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
-    public class StolenPoliceCar : Callout
+    [CalloutProperties("Stolen Ambulance Car Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
+    public class StolenAmbul : Callout
     {
         private Vehicle car;
         Ped driver;
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
         List<object> items = new List<object>();
-        public StolenPoliceCar()
+        public StolenAmbul()
         {
 
             Random rnd = new Random();
@@ -25,8 +25,8 @@ namespace CarCallout
             float offsetY = rnd.Next(100, 700);
 
             InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
-            ShortName = "Stolen Police Car";
-            CalloutDescription = "Someone stole a police car!";
+            ShortName = "Stolen Ambulance";
+            CalloutDescription = "Someone stole an ambulance!";
             ResponseCode = 3;
             StartDistance = 250f;
         }
@@ -42,12 +42,13 @@ namespace CarCallout
             dynamic playerData = GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
+
         }
         public async override Task Init()
         {
             OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
-            car = await SpawnVehicle(VehicleHash.Police, Location,12);
+            car = await SpawnVehicle(VehicleHash.Ambulance, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);
             API.SetVehicleLightsMode(car.GetHashCode(), 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
@@ -63,6 +64,7 @@ namespace CarCallout
             SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
+            
         }
         public override void OnCancelBefore()
         {

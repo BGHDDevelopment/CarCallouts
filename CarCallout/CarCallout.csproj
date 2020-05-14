@@ -51,8 +51,12 @@
         <Compile Include="RecklessDriver.cs" />
         <Compile Include="ReverseCarCallout.cs" />
         <Compile Include="SlowDriver.cs" />
+        <Compile Include="SmallCar.cs" />
+        <Compile Include="StolenAmbul.cs" />
         <Compile Include="StolenFireTruck.cs" />
         <Compile Include="StolenPoliceCar.cs" />
+        <Compile Include="StolenPoliceCarWithHostage.cs" />
+        <Compile Include="VanPursuit.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

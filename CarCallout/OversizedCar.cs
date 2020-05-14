@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CalloutAPI;
@@ -8,11 +10,13 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.12", Probability.Low)]
+    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
     public class OversizedCar : Callout
     {
         private Vehicle car;
         Ped driver;
+        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
+        List<object> items = new List<object>();
 
         public OversizedCar()
         {
@@ -23,7 +27,7 @@ namespace CarCallout
 
             InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Oversized Vehicle";
-            CalloutDescription = "A oversized car is causing issues.";
+            CalloutDescription = "A oversized vehicle is causing issues.";
             ResponseCode = 2;
             StartDistance = 250f;
         }
@@ -31,8 +35,9 @@ namespace CarCallout
         public override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 15f, 525116);
+            driver.Task.CruiseWithVehicle(car,15f, 525116);
             car.AttachBlip();
+            driver.AttachBlip();
         }
         public async override Task Init()
         {
@@ -41,6 +46,20 @@ namespace CarCallout
             car = await SpawnVehicle(VehicleHash.Dump, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
 
+            //Driver Data
+            dynamic data = new ExpandoObject();
+            data.alcoholLevel = 0.13;
+            data.drugsUsed = new bool[] {true,false,true};
+            SetPedData(driver.NetworkId,data);
+            Random random3 = new Random();
+            string name2 = goodItemList[random3.Next(goodItemList.Length)];
+            object goodItem = new {
+                Name = name2,
+                IsIllegal = false
+            };
+            items.Add(goodItem);
+            data.items = items;
+            SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

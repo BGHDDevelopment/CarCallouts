@@ -10,14 +10,14 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.12", Probability.High)]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.13", Probability.High)]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
         Ped driver;
         private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "stunt", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "nemesis", "minivan", "gburrito", "emperor2", "emperor"};
         private string[] badItemList = { "Beer Bottle", "Open Beer Can", "Wine Bottle", "Random Pills", "Needles"};
-        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake"};
+        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
         List<object> items = new List<object>();
 
         public RecklessDriver()
@@ -37,8 +37,9 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 25f, 525116);
+            driver.Task.CruiseWithVehicle(car, 25f, 525116);
             car.AttachBlip();
+            driver.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
@@ -70,7 +71,7 @@ namespace CarCallout
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
             object goodItem = new {
                 Name = name2,
-                IsIllegal = true
+                IsIllegal = false
             };
             items.Add(badItem);
             items.Add(goodItem);

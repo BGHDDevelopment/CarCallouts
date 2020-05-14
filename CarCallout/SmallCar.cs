@@ -10,14 +10,15 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Police Car Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
-    public class StolenPoliceCar : Callout
+    [CalloutProperties("Small Vehicle Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
+    public class SmallCar : Callout
     {
         private Vehicle car;
         Ped driver;
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
         List<object> items = new List<object>();
-        public StolenPoliceCar()
+
+        public SmallCar()
         {
 
             Random rnd = new Random();
@@ -25,33 +26,31 @@ namespace CarCallout
             float offsetY = rnd.Next(100, 700);
 
             InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
-            ShortName = "Stolen Police Car";
-            CalloutDescription = "Someone stole a police car!";
-            ResponseCode = 3;
+            ShortName = "Very Small Vehicle";
+            CalloutDescription = "A very small vehicle is causing traffic issues.";
+            ResponseCode = 2;
             StartDistance = 250f;
         }
 
-        public async override void OnStart(Ped player)
+        public override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 30f);
-            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
-            driver.Task.FleeFrom(player);
+            driver.Task.CruiseWithVehicle(car, 5f, 524675);
             car.AttachBlip();
             driver.AttachBlip();
-            dynamic playerData = GetPlayerData();
-            string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
         }
         public async override Task Init()
         {
             OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
-            car = await SpawnVehicle(VehicleHash.Police, Location,12);
-            API.SetVehicleLights(car.GetHashCode(), 2);
-            API.SetVehicleLightsMode(car.GetHashCode(), 2);
+            car = await SpawnVehicle(VehicleHash.Tug, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
+
+            //Driver Data
             dynamic data = new ExpandoObject();
+            data.alcoholLevel = 0.07;
+            data.drugsUsed = new bool[] {false,false,false};
+            SetPedData(driver.NetworkId,data);
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
             object goodItem = new {
@@ -67,7 +66,6 @@ namespace CarCallout
         public override void OnCancelBefore()
         {
         }
-
         private void Notify(string message)
         {
             API.BeginTextCommandThefeedPost("STRING");

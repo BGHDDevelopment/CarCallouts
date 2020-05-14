@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
@@ -9,12 +10,14 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.12", Probability.Medium)]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.13", Probability.Medium)]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;
         Ped driver;
         private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
+        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
+        List<object> items = new List<object>();
         public ReverseCarCallout()
         {
 
@@ -32,8 +35,9 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 12f, 1923);
+            driver.Task.CruiseWithVehicle(car, 12f, 1923);
             car.AttachBlip();
+            driver.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
@@ -54,6 +58,14 @@ namespace CarCallout
             dynamic data = new ExpandoObject();
             data.alcoholLevel = 0.10;
             data.drugsUsed = new bool[] {false,false,true};
+            Random random3 = new Random();
+            string name2 = goodItemList[random3.Next(goodItemList.Length)];
+            object goodItem = new {
+                Name = name2,
+                IsIllegal = false
+            };
+            items.Add(goodItem);
+            data.items = items;
             SetPedData(driver.NetworkId,data);
             
             driver.AlwaysKeepTask = true;

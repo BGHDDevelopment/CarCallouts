@@ -10,11 +10,13 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.12", Probability.High)]
+    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.13", Probability.High)]
     public class SlowDriver : Callout
     {
         private Vehicle car;
         Ped driver;
+        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
+        List<object> items2 = new List<object>();
         private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
         public SlowDriver()
         {
@@ -33,8 +35,9 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.TaskVehicleDriveWander(driver.GetHashCode(), car.GetHashCode(), 2f, 387);
+            driver.Task.CruiseWithVehicle(car, 2f, 387);
             car.AttachBlip();
+            driver.AttachBlip();
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
@@ -59,10 +62,18 @@ namespace CarCallout
             dynamic data = new ExpandoObject();
             data.alcoholLevel = 0.05;
             object Meth = new {
-                Name = "Bag of meth",
+                Name = "Bag of Meth",
                 IsIllegal = true
             };
             items.Add(Meth);
+            Random random3 = new Random();
+            string name2 = goodItemList[random3.Next(goodItemList.Length)];
+            object goodItem = new {
+                Name = name2,
+                IsIllegal = false
+            };
+            items.Add(goodItem);
+            data.items2 = items2;
             data.items = items;
             data.drugsUsed = new bool[] {true,false,false};
             SetPedData(driver.NetworkId,data);

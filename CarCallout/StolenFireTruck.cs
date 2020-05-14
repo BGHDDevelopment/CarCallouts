@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CalloutAPI;
@@ -8,12 +10,13 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Firetruck Callout", "BGHDDevelopment", "0.0.12", Probability.Low)]
+    [CalloutProperties("Stolen Firetruck Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
     public class StolenFireTruck : Callout
     {
         private Vehicle car;
         Ped driver;
-
+        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
+        List<object> items = new List<object>();
         public StolenFireTruck()
         {
 
@@ -35,8 +38,10 @@ namespace CarCallout
             API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
             driver.Task.FleeFrom(player);
             car.AttachBlip();
-            Notify("The driver is fleeing!");
-
+            driver.AttachBlip();
+            dynamic playerData = GetPlayerData();
+            string displayName = playerData.DisplayName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
         }
         public async override Task Init()
         {
@@ -46,6 +51,16 @@ namespace CarCallout
             API.SetVehicleLights(car.GetHashCode(), 2);
             API.SetVehicleLightsMode(car.GetHashCode(), 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
+            dynamic data = new ExpandoObject();
+            Random random3 = new Random();
+            string name2 = goodItemList[random3.Next(goodItemList.Length)];
+            object goodItem = new {
+                Name = name2,
+                IsIllegal = false
+            };
+            items.Add(goodItem);
+            data.items = items;
+            SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }
