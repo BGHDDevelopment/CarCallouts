@@ -11,7 +11,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
 
-    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.13", Probability.Low)]
+    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.14", Probability.Low)]
     public class PursuitCallout : Callout
     {
         private Vehicle car;
@@ -19,7 +19,7 @@ namespace CarCallout
         Ped passenger;
         List<object> items = new List<object>();
         List<object> items2 = new List<object>();
-        private string[] carList = { "speedo", "speedo2", "squalo", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
+        private string[] carList = { "speedo", "speedo2", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
 
         public PursuitCallout()
         {

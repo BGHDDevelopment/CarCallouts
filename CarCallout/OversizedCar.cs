@@ -10,7 +10,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.13", Probability.Low)]
+    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.14", Probability.Low)]
     public class OversizedCar : Callout
     {
         private Vehicle car;
