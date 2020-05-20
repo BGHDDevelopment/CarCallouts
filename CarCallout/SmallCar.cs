@@ -10,7 +10,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Small Vehicle Callout", "BGHDDevelopment", "0.0.14", Probability.Low)]
+    [CalloutProperties("Small Vehicle Callout", "BGHDDevelopment", "0.0.15", Probability.Low)]
     public class SmallCar : Callout
     {
         private Vehicle car;
@@ -43,7 +43,7 @@ namespace CarCallout
         {
             OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
-            car = await SpawnVehicle(VehicleHash.Tug, Location,12);
+            car = await SpawnVehicle(VehicleHash.Airtug, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
 
             //Driver Data

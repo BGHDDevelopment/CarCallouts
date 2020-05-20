@@ -10,7 +10,7 @@ using CitizenFX.Core.Native;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.14", Probability.High)]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.15", Probability.High)]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
@@ -77,7 +77,6 @@ namespace CarCallout
             items.Add(goodItem);
             data.items = items;
             SetPedData(driver.NetworkId,data);
-            
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }
