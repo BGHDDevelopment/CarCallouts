@@ -65,6 +65,16 @@ namespace CarCallout
         }
         public override void OnCancelBefore()
         {
+            { 
+                foreach (Blip blip in car.AttachedBlips)
+                    if (car != null && car.AttachedBlip.Exists())
+                        blip.Delete();
+            }
+            { 
+                foreach (Blip blip in driver.AttachedBlips)
+                    if (driver != null && driver.AttachedBlip.Exists())
+                        blip.Delete();
+            }
         }
         private void Notify(string message)
         {

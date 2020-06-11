@@ -38,6 +38,8 @@ namespace CarCallout
             driver.Task.CruiseWithVehicle(car, 2f, 387);
             car.AttachBlip();
             driver.AttachBlip();
+            API.AddBlipForEntity(car.GetHashCode());
+            API.AddBlipForEntity(driver.GetHashCode());
             dynamic data1 = await GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
@@ -87,6 +89,16 @@ namespace CarCallout
 
         public override void OnCancelBefore()
         {
+            { 
+                foreach (Blip blip in car.AttachedBlips)
+                    if (car != null && car.AttachedBlip.Exists())
+                        blip.Delete();
+            }
+            { 
+                foreach (Blip blip in driver.AttachedBlips)
+                    if (driver != null && driver.AttachedBlip.Exists())
+                        blip.Delete();
+            }
         }
         private void Notify(string message)
         {
