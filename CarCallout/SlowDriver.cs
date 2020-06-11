@@ -10,7 +10,7 @@ using FivePD.API;
 namespace CarCallout
 {
     
-    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.17", Probability.High)]
+    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.17")]
     public class SlowDriver : Callout
     {
         private Vehicle car;

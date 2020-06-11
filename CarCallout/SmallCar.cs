@@ -10,7 +10,7 @@ using FivePD.API;
 namespace CarCallout
 {
     
-    [CalloutProperties("Small Vehicle Callout", "BGHDDevelopment", "0.0.17", Probability.Low)]
+    [CalloutProperties("Small Vehicle Callout", "BGHDDevelopment", "0.0.17")]
     public class SmallCar : Callout
     {
         private Vehicle car;
