@@ -89,14 +89,6 @@ namespace CarCallout
 
         public override void OnCancelBefore()
         {
-            { 
-                if(car != null  && car.AttachedBlip != null && car.AttachedBlip.Exists())
-                    car.AttachedBlip.Delete();
-            }
-            { 
-                if(driver != null  && driver.AttachedBlip != null && driver.AttachedBlip.Exists())
-                    driver.AttachedBlip.Delete();
-            }
         }
         private void Notify(string message)
         {

@@ -129,22 +129,6 @@ namespace CarCallout
         }
         public override void OnCancelBefore()
         {
-            { 
-                if(car != null  && car.AttachedBlip != null && car.AttachedBlip.Exists())
-                    car.AttachedBlip.Delete();
-            }
-            { 
-                if(driver != null  && driver.AttachedBlip != null && driver.AttachedBlip.Exists())
-                    driver.AttachedBlip.Delete();
-            }
-            { 
-                if(passenger != null  && passenger.AttachedBlip != null && passenger.AttachedBlip.Exists())
-                    passenger.AttachedBlip.Delete();
-            }
-            { 
-                if(passenger2 != null  && passenger2.AttachedBlip != null && passenger2.AttachedBlip.Exists())
-                    passenger2.AttachedBlip.Delete();
-            }
         }
     }
 }
