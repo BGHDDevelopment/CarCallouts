@@ -88,19 +88,16 @@ namespace CarCallout
         public override void OnCancelBefore()
         {
             { 
-                foreach (Blip blip in car.AttachedBlips)
-                    if (car != null && car.AttachedBlip.Exists())
-                        blip.Delete();
+                if(car != null  && car.AttachedBlip != null && car.AttachedBlip.Exists())
+                    car.AttachedBlip.Delete();
             }
             { 
-                foreach (Blip blip in driver.AttachedBlips)
-                    if (driver != null && driver.AttachedBlip.Exists())
-                        blip.Delete();
+                if(driver != null  && driver.AttachedBlip != null && driver.AttachedBlip.Exists())
+                    driver.AttachedBlip.Delete();
             }
             { 
-                foreach (Blip blip in police.AttachedBlips)
-                    if (police != null && police.AttachedBlip.Exists())
-                        blip.Delete();
+                if(police != null  && police.AttachedBlip != null && police.AttachedBlip.Exists())
+                    police.AttachedBlip.Delete();
             }
         }
 
