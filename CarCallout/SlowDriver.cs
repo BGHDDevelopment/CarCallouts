@@ -25,7 +25,7 @@ namespace CarCallout
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
 
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Slow Driver";
             CalloutDescription = "A car is driving at very slow speeds causing traffic jams.";
             ResponseCode = 3;
@@ -40,7 +40,7 @@ namespace CarCallout
             driver.AttachBlip();
             API.AddBlipForEntity(car.GetHashCode());
             API.AddBlipForEntity(driver.GetHashCode());
-            dynamic data1 = await GetPedData(driver.NetworkId);
+            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 5000);
@@ -49,10 +49,9 @@ namespace CarCallout
         List<object> items = new List<object>();
 
       
-        public async override Task Init()
+        public async override Task OnAccept()
         {
             
-            OnAccept();
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
@@ -78,11 +77,11 @@ namespace CarCallout
             data.items2 = items2;
             data.items = items;
             data.drugsUsed = new bool[] {true,false,false};
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId,data);
             
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
-            dynamic playerData = GetPlayerData();
+            dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
         }

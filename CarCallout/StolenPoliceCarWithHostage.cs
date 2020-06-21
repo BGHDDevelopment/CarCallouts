@@ -24,7 +24,7 @@ namespace CarCallout
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
 
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Stolen Police Car (With Hostage)";
             CalloutDescription = "Someone stole a police car and took an officer hostage!";
             ResponseCode = 3;
@@ -41,23 +41,22 @@ namespace CarCallout
             driver.AttachBlip();
             police.AttachBlip();
             police.Task.HandsUp(1000000);
-            dynamic playerData = GetPlayerData();
+            dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
-            dynamic data1 = await GetPedData(driver.NetworkId);
+            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Stay quiet and don't say anything!", 5000);
-            dynamic data2 = await GetPedData(police.NetworkId);
+            dynamic data2 = await Utilities.GetPedData(police.NetworkId);
             string firstname2 = data2.Firstname;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname2 + "] ~s~Will do.... are you high?", 5000);
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Shut up!", 5000);
         }
-        public async override Task Init()
+        public async override Task OnAccept()
         {
-            OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             police = await SpawnPed(PedHash.Hwaycop01SMY, Location + 1);
             car = await SpawnVehicle(VehicleHash.Police, Location,12);
@@ -81,7 +80,7 @@ namespace CarCallout
             items.Add(goodItem);
             data.items = items;
             data.drugsUsed = new bool[] {true,false,false};
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

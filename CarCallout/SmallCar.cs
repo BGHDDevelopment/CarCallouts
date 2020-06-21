@@ -25,7 +25,7 @@ namespace CarCallout
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
 
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Very Small Vehicle";
             CalloutDescription = "A very small vehicle is causing traffic issues.";
             ResponseCode = 2;
@@ -39,9 +39,8 @@ namespace CarCallout
             car.AttachBlip();
             driver.AttachBlip();
         }
-        public async override Task Init()
+        public async override Task OnAccept()
         {
-            OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Airtug, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
@@ -50,7 +49,7 @@ namespace CarCallout
             dynamic data = new ExpandoObject();
             data.alcoholLevel = 0.07;
             data.drugsUsed = new bool[] {false,false,false};
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId,data);
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
             object goodItem = new {
@@ -59,7 +58,7 @@ namespace CarCallout
             };
             items.Add(goodItem);
             data.items = items;
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

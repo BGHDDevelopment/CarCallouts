@@ -24,7 +24,7 @@ namespace CarCallout
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
 
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Stolen Police Car";
             CalloutDescription = "Someone stole a police car!";
             ResponseCode = 3;
@@ -39,13 +39,12 @@ namespace CarCallout
             driver.Task.FleeFrom(player);
             car.AttachBlip();
             driver.AttachBlip();
-            dynamic playerData = GetPlayerData();
+            dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
         }
-        public async override Task Init()
+        public async override Task OnAccept()
         {
-            OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Police, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);
@@ -60,7 +59,7 @@ namespace CarCallout
             };
             items.Add(goodItem);
             data.items = items;
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

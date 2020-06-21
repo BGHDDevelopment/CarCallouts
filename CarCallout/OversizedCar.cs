@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
-
+using FivePD.API.Utils;
 
 namespace CarCallout
 {
@@ -25,13 +25,12 @@ namespace CarCallout
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
 
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Oversized Vehicle";
             CalloutDescription = "A oversized vehicle is causing issues.";
             ResponseCode = 2;
             StartDistance = 250f;
         }
-
         public override void OnStart(Ped player)
         {
             base.OnStart(player);
@@ -39,9 +38,8 @@ namespace CarCallout
             car.AttachBlip();
             driver.AttachBlip();
         }
-        public async override Task Init()
+        public async override Task OnAccept()
         {
-            OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Dump, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
@@ -50,7 +48,7 @@ namespace CarCallout
             dynamic data = new ExpandoObject();
             data.alcoholLevel = 0.13;
             data.drugsUsed = new bool[] {true,false,true};
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId, data);
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
             object goodItem = new {
@@ -59,7 +57,7 @@ namespace CarCallout
             };
             items.Add(goodItem);
             data.items = items;
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId, data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

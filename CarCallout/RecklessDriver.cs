@@ -27,7 +27,7 @@ namespace CarCallout
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
 
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Reckless Driver";
             CalloutDescription = "A car is driving recklessly.";
             ResponseCode = 3;
@@ -40,21 +40,20 @@ namespace CarCallout
             driver.Task.CruiseWithVehicle(car, 25f, 525116);
             car.AttachBlip();
             driver.AttachBlip();
-            dynamic data1 = await GetPedData(driver.NetworkId);
+            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
             string firstname = data1.Firstname;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 5000);
         }
-        public async override Task Init()
+        public async override Task OnAccept()
         {
-            OnAccept();
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash selectedHash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(selectedHash, Location);
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
-            dynamic playerData = GetPlayerData();
+            dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
             
@@ -76,7 +75,7 @@ namespace CarCallout
             items.Add(badItem);
             items.Add(goodItem);
             data.items = items;
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId,data);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

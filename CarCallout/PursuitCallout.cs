@@ -26,7 +26,7 @@ namespace CarCallout
             Random rnd = new Random();
             float offsetX = rnd.Next(100, 700);
             float offsetY = rnd.Next(100, 700);
-            InitBase(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
             ShortName = "Pursuit of Armed Suspects";
             CalloutDescription = "Suspects just robbed a person with weapons. They are fleeing.";
             ResponseCode = 3;
@@ -35,7 +35,7 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            dynamic playerData = GetPlayerData();
+            dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             passenger.Weapons.Give(WeaponHash.Pistol, 20, true, true);
             driver.Weapons.Give(WeaponHash.SMG, 30, true, true);
@@ -48,8 +48,8 @@ namespace CarCallout
             passenger.AttachBlip();
             API.Wait(6000);
             passenger.Task.FightAgainst(player);
-            dynamic data2 = await GetPedData(passenger.NetworkId);
-            dynamic data1 = await GetPedData(driver.NetworkId);
+            dynamic data2 = await Utilities.GetPedData(passenger.NetworkId);
+            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
             string firstname2 = data2.Firstname;
             string firstname = data1.Firstname;
             API.Wait(6000);
@@ -59,10 +59,9 @@ namespace CarCallout
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname2 + "] ~s~To late!", 5000);
         }
-        public async override Task Init()
+        public async override Task OnAccept()
         {
 
-            OnAccept();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             passenger = await SpawnPed(GetRandomPed(), Location + 1);
             Random random = new Random();
@@ -71,7 +70,7 @@ namespace CarCallout
             car = await SpawnVehicle(Hash, Location);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
             passenger.SetIntoVehicle(car, VehicleSeat.Passenger);
-            dynamic playerData = GetPlayerData();
+            dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + cartype + "!");
             
@@ -84,7 +83,7 @@ namespace CarCallout
             };
             items.Add(SMG);
             data.items = items;
-            SetPedData(driver.NetworkId,data);
+            Utilities.SetPedData(driver.NetworkId, data);
             
             //Passenger Data
             dynamic data2 = new ExpandoObject();
@@ -95,7 +94,7 @@ namespace CarCallout
             };
             items2.Add(Pistol);
             data2.items = items2;
-            SetPedData(passenger.NetworkId,data2);
+            Utilities.SetPedData(passenger.NetworkId, data2);
             
             //Tasks
             driver.AlwaysKeepTask = true;
