@@ -63,6 +63,7 @@ namespace CarCallout
         }
         public async override Task OnAccept()
         {
+            InitBlip();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             passenger = await SpawnPed(GetRandomPed(), Location + 1);
             passenger2 = await SpawnPed(GetRandomPed(), Location + 1);

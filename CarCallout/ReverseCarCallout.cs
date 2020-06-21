@@ -45,6 +45,7 @@ namespace CarCallout
         }
         public async override Task OnAccept()
         {
+            InitBlip();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];

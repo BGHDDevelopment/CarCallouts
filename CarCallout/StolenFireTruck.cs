@@ -45,6 +45,7 @@ namespace CarCallout
         }
         public async override Task OnAccept()
         {
+            InitBlip();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.FireTruk, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);

@@ -40,6 +40,7 @@ namespace CarCallout
         }
         public async override Task OnAccept()
         {
+            InitBlip();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Dump, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);

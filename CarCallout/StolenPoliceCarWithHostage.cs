@@ -57,6 +57,7 @@ namespace CarCallout
         }
         public async override Task OnAccept()
         {
+            InitBlip();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             police = await SpawnPed(PedHash.Hwaycop01SMY, Location + 1);
             car = await SpawnVehicle(VehicleHash.Police, Location,12);

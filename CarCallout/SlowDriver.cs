@@ -51,7 +51,7 @@ namespace CarCallout
       
         public async override Task OnAccept()
         {
-            
+            InitBlip();
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
