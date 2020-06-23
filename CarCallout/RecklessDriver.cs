@@ -32,6 +32,7 @@ namespace CarCallout
             CalloutDescription = "A car is driving recklessly.";
             ResponseCode = 3;
             StartDistance = 200f;
+            UpdateData();
         }
 
         public async override void OnStart(Ped player)

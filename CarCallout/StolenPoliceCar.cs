@@ -29,6 +29,7 @@ namespace CarCallout
             CalloutDescription = "Someone stole a police car!";
             ResponseCode = 3;
             StartDistance = 250f;
+            UpdateData();
         }
 
         public async override void OnStart(Ped player)

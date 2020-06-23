@@ -30,6 +30,7 @@ namespace CarCallout
             CalloutDescription = "A very small vehicle is causing traffic issues.";
             ResponseCode = 2;
             StartDistance = 250f;
+            UpdateData();
         }
 
         public override void OnStart(Ped player)

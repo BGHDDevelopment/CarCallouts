@@ -30,6 +30,7 @@ namespace CarCallout
             CalloutDescription = "A car is driving in reverse.";
             ResponseCode = 3;
             StartDistance = 250f;
+            UpdateData();
         }
 
         public async override void OnStart(Ped player)

@@ -30,6 +30,7 @@ namespace CarCallout
             CalloutDescription = "Suspects just robbed a store with weapons. They are fleeing.";
             ResponseCode = 3;
             StartDistance = 150f;
+            UpdateData();
         }
         public async override void OnStart(Ped player)
         {
