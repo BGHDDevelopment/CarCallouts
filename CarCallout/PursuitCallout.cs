@@ -31,6 +31,7 @@ namespace CarCallout
             CalloutDescription = "Suspects just robbed a person with weapons. They are fleeing.";
             ResponseCode = 3;
             StartDistance = 150f;
+            UpdateData();
         }
         public async override void OnStart(Ped player)
         {
@@ -72,7 +73,9 @@ namespace CarCallout
             passenger.SetIntoVehicle(car, VehicleSeat.Passenger);
             dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + cartype + "!");
+            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.VehicleName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
             
             //Driver Data
             dynamic data = new ExpandoObject();
@@ -95,6 +98,12 @@ namespace CarCallout
             items2.Add(Pistol);
             data2.items = items2;
             Utilities.SetPedData(passenger.NetworkId, data2);
+            
+            //Car Data
+            dynamic vehicleData = new ExpandoObject();
+            vehicleData.registration = false;
+            Utilities.SetVehicleData(car.NetworkId,vehicleData);
+            Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
             
             //Tasks
             driver.AlwaysKeepTask = true;

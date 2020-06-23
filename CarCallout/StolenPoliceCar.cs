@@ -61,6 +61,10 @@ namespace CarCallout
             items.Add(goodItem);
             data.items = items;
             Utilities.SetPedData(driver.NetworkId,data);
+            //Car Data
+            dynamic vehicleData = new ExpandoObject();
+            Utilities.SetVehicleData(car.NetworkId,vehicleData);
+            Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

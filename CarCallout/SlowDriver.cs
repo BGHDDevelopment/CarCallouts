@@ -83,7 +83,9 @@ namespace CarCallout
             driver.BlockPermanentEvents = true;
             dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
+            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.VehicleName;            
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + vehicleName + "!");
         }
 
         public override void OnCancelBefore()

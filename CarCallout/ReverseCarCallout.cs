@@ -53,7 +53,9 @@ namespace CarCallout
             car = await SpawnVehicle(Hash, Location);
             dynamic playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + cartype + "!");
+            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.VehicleName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + vehicleName + "!");
             //Driver Data
             dynamic data = new ExpandoObject();
             data.alcoholLevel = 0.10;
@@ -68,6 +70,10 @@ namespace CarCallout
             data.items = items;
             Utilities.SetPedData(driver.NetworkId,data);
             
+            //Car Data
+            dynamic vehicleData = new ExpandoObject();
+            vehicleData.registration = false;
+            Utilities.SetVehicleData(car.NetworkId,vehicleData);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
         }

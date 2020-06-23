@@ -107,6 +107,13 @@ namespace CarCallout
             data3.items = items3;
             Utilities.SetPedData(passenger2.NetworkId,data3);
             
+            //Car Data
+            dynamic vehicleData = new ExpandoObject();
+            vehicleData.insurance = false;
+            Utilities.SetVehicleData(car.NetworkId,vehicleData);
+            Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
+
+            
             //Tasks
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
