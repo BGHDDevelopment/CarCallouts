@@ -30,7 +30,6 @@ namespace CarCallout
             CalloutDescription = "A car is driving in reverse.";
             ResponseCode = 3;
             StartDistance = 250f;
-            UpdateData();
         }
 
         public async override void OnStart(Ped player)
@@ -47,6 +46,7 @@ namespace CarCallout
         public async override Task OnAccept()
         {
             InitBlip();
+            UpdateData();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];

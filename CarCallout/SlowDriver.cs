@@ -30,7 +30,6 @@ namespace CarCallout
             CalloutDescription = "A car is driving at very slow speeds causing traffic jams.";
             ResponseCode = 3;
             StartDistance = 250f;
-            UpdateData();
         }
 
         public async override void OnStart(Ped player)
@@ -53,6 +52,7 @@ namespace CarCallout
         public async override Task OnAccept()
         {
             InitBlip();
+            UpdateData();
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);

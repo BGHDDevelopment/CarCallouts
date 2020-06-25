@@ -30,7 +30,6 @@ namespace CarCallout
             CalloutDescription = "A oversized vehicle is causing issues.";
             ResponseCode = 2;
             StartDistance = 250f;
-            UpdateData();
         }
         public override void OnStart(Ped player)
         {
@@ -42,6 +41,7 @@ namespace CarCallout
         public async override Task OnAccept()
         {
             InitBlip();
+            UpdateData();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Dump, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);

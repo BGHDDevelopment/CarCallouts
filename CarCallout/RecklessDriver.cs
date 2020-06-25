@@ -32,7 +32,6 @@ namespace CarCallout
             CalloutDescription = "A car is driving recklessly.";
             ResponseCode = 3;
             StartDistance = 200f;
-            UpdateData();
         }
 
         public async override void OnStart(Ped player)
@@ -49,6 +48,7 @@ namespace CarCallout
         public async override Task OnAccept()
         {
             InitBlip();
+            UpdateData();
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash selectedHash = (VehicleHash) API.GetHashKey(cartype);

@@ -29,7 +29,6 @@ namespace CarCallout
             CalloutDescription = "Someone stole an ambulance!";
             ResponseCode = 3;
             StartDistance = 250f;
-            UpdateData();
         }
 
         public async override void OnStart(Ped player)
@@ -48,6 +47,7 @@ namespace CarCallout
         public async override Task OnAccept()
         {
             InitBlip();
+            UpdateData();
             driver = await SpawnPed(GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Ambulance, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);
