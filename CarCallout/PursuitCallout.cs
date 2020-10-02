@@ -1,7 +1,5 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
@@ -57,6 +55,7 @@ namespace CarCallout
             DrawSubtitle("~r~[" + firstname + "] ~s~Do not shoot!", 5000);
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname2 + "] ~s~To late!", 5000);
+            var pursuit = Pursuit.RegisterPursuit(driver);
         }
         public async override Task OnAccept()
         {
