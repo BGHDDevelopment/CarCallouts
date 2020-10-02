@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
+using FivePD.API.Utils;
 
 
 namespace CarCallout
@@ -17,8 +18,6 @@ namespace CarCallout
         private Vehicle car;
         Ped driver;
         Ped passenger;
-        List<object> items = new List<object>();
-        List<object> items2 = new List<object>();
         private string[] carList = { "speedo", "speedo2", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
 
         public PursuitCallout()
@@ -35,7 +34,7 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            dynamic playerData = Utilities.GetPlayerData();
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             passenger.Weapons.Give(WeaponHash.Pistol, 20, true, true);
             driver.Weapons.Give(WeaponHash.SMG, 30, true, true);
@@ -48,10 +47,10 @@ namespace CarCallout
             passenger.AttachBlip();
             API.Wait(6000);
             passenger.Task.FightAgainst(player);
-            dynamic data2 = await Utilities.GetPedData(passenger.NetworkId);
-            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname2 = data2.Firstname;
-            string firstname = data1.Firstname;
+            PedData data2 = await Utilities.GetPedData(passenger.NetworkId);
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname2 = data2.FirstName;
+            string firstname = data1.FirstName;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 5000);
             API.Wait(6000);
@@ -63,45 +62,47 @@ namespace CarCallout
         {
             InitBlip();
             UpdateData();
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
-            passenger = await SpawnPed(GetRandomPed(), Location + 1);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
+            passenger = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(Hash, Location);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
             passenger.SetIntoVehicle(car, VehicleSeat.Passenger);
-            dynamic playerData = Utilities.GetPlayerData();
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
-            string vehicleName = datacar.VehicleName;
+            VehicleData datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.Name;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
             
             //Driver Data
-            dynamic data = new ExpandoObject();
-            data.alcoholLevel = 0.01;
-            object SMG = new {
+            PedData data = new PedData();
+            data.BloodAlcoholLevel = 0.01;
+            List<Item> items = data.Items;
+            Item SMG = new Item {
                 Name = "SMG",
                 IsIllegal = true
             };
             items.Add(SMG);
-            data.items = items;
+            data.Items = items;
             Utilities.SetPedData(driver.NetworkId, data);
             
             //Passenger Data
-            dynamic data2 = new ExpandoObject();
-            data2.alcoholLevel = 0.09;
-            object Pistol = new {
+            PedData data2 = new PedData();
+            List<Item> items2 = data.Items;
+            data2.BloodAlcoholLevel = 0.09;
+            Item Pistol = new Item {
                 Name = "Pistol",
                 IsIllegal = true
             };
             items2.Add(Pistol);
-            data2.items = items2;
+            data2.Items = items2;
             Utilities.SetPedData(passenger.NetworkId, data2);
             
             //Car Data
-            dynamic vehicleData = new ExpandoObject();
-            vehicleData.registration = false;
+            VehicleData vehicleData = new VehicleData();
+            vehicleData.Registration = false;
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
             

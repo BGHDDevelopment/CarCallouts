@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
+using FivePD.API.Utils;
 
 
 namespace CarCallout
@@ -16,7 +17,6 @@ namespace CarCallout
         private Vehicle car;
         Ped driver, police;
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
-        List<object> items = new List<object>();
         public StolenPoliceCarHostage()
         {
 
@@ -41,15 +41,15 @@ namespace CarCallout
             driver.AttachBlip();
             police.AttachBlip();
             police.Task.HandsUp(1000000);
-            dynamic playerData = Utilities.GetPlayerData();
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
-            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.Firstname;
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Stay quiet and don't say anything!", 5000);
-            dynamic data2 = await Utilities.GetPedData(police.NetworkId);
-            string firstname2 = data2.Firstname;
+            PedData data2 = await Utilities.GetPedData(police.NetworkId);
+            string firstname2 = data2.FirstName;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname2 + "] ~s~Will do.... are you high?", 5000);
             API.Wait(6000);
@@ -59,7 +59,7 @@ namespace CarCallout
         {
             InitBlip();
             UpdateData();
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             police = await SpawnPed(PedHash.Hwaycop01SMY, Location + 1);
             car = await SpawnVehicle(VehicleHash.Police, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);
@@ -67,24 +67,25 @@ namespace CarCallout
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
             police.SetIntoVehicle(car, VehicleSeat.Passenger);
             driver.Weapons.Give(WeaponHash.Pistol, 20, true, true);
-            dynamic data = new ExpandoObject();
+            PedData data = new PedData();
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            object goodItem = new {
+            List<Item> items = data.Items;
+            Item goodItem = new Item {
                 Name = name2,
                 IsIllegal = false
             };
-            object Pistol = new {
+            Item Pistol = new Item {
                 Name = "Pistol",
-                IsIllegal = true
+                IsIllegal = false
             };
             items.Add(Pistol);
             items.Add(goodItem);
-            data.items = items;
-            data.drugsUsed = new bool[] {true,false,false};
+            data.Items = items;
+            PedData.Drugs[] drugs = data.UsedDrugs; //TODO FIX THIS
             Utilities.SetPedData(driver.NetworkId,data);
             //Car Data
-            dynamic vehicleData = new ExpandoObject();
+            VehicleData vehicleData = await Utilities.GetVehicleData(car.NetworkId);
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
             driver.AlwaysKeepTask = true;

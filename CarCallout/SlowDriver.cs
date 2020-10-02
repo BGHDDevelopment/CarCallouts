@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
+using FivePD.API.Utils;
 
 
 namespace CarCallout
@@ -40,8 +41,8 @@ namespace CarCallout
             driver.AttachBlip();
             API.AddBlipForEntity(car.GetHashCode());
             API.AddBlipForEntity(driver.GetHashCode());
-            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.Firstname;
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 5000);
         }
@@ -57,36 +58,37 @@ namespace CarCallout
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(Hash, Location);
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
 
             //Driver Data
-            dynamic data = new ExpandoObject();
-            data.alcoholLevel = 0.05;
-            object Meth = new {
+            PedData data = new PedData();
+            data.BloodAlcoholLevel = 0.05;
+            List<Item> items = data.Items;
+            Item Meth = new Item {
                 Name = "Bag of Meth",
                 IsIllegal = true
             };
             items.Add(Meth);
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            object goodItem = new {
+            Item goodItem = new Item {
                 Name = name2,
                 IsIllegal = false
             };
             items.Add(goodItem);
-            data.items2 = items2;
-            data.items = items;
-            data.drugsUsed = new bool[] {true,false,false};
+            data.Items = items;
+            PedData.Drugs[] drugs = data.UsedDrugs; //TODO FIX THIS
             Utilities.SetPedData(driver.NetworkId,data);
             
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
-            dynamic playerData = Utilities.GetPlayerData();
+            
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
-            string vehicleName = datacar.VehicleName;            
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + vehicleName + "!");
+            VehicleData datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.Name;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
         }
 
         public override void OnCancelBefore()

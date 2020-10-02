@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
+using FivePD.API.Utils;
 
 
 namespace CarCallout
@@ -16,7 +17,6 @@ namespace CarCallout
         private Vehicle car;
         Ped driver;
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
-        List<object> items = new List<object>();
         public StolenFireTruck()
         {
 
@@ -39,7 +39,7 @@ namespace CarCallout
             driver.Task.FleeFrom(player);
             car.AttachBlip();
             driver.AttachBlip();
-            dynamic playerData = Utilities.GetPlayerData();
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
         }
@@ -47,23 +47,24 @@ namespace CarCallout
         {
             InitBlip();
             UpdateData();
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.FireTruk, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);
             API.SetVehicleLightsMode(car.GetHashCode(), 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
-            dynamic data = new ExpandoObject();
+            PedData data = new PedData();
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            object goodItem = new {
+            List<Item> items = data.Items;
+            Item goodItem = new Item {
                 Name = name2,
                 IsIllegal = false
             };
             items.Add(goodItem);
-            data.items = items;
+            data.Items = items;
             Utilities.SetPedData(driver.NetworkId,data);
             //Car Data
-            dynamic vehicleData = new ExpandoObject();
+            VehicleData vehicleData = await Utilities.GetVehicleData(car.NetworkId);
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
             driver.AlwaysKeepTask = true;
@@ -78,12 +79,6 @@ namespace CarCallout
             API.BeginTextCommandThefeedPost("STRING");
             API.AddTextComponentSubstringPlayerName(message);
             API.EndTextCommandThefeedPostTicker(false, true);
-        }
-        private void DrawSubtitle(string message, int duration)
-        {
-            API.BeginTextCommandPrint("STRING");
-            API.AddTextComponentSubstringPlayerName(message);
-            API.EndTextCommandPrint(duration, false);
         }
     }
 }

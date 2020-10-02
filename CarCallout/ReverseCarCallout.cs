@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
+using FivePD.API.Utils;
 
 
 namespace CarCallout
@@ -17,7 +18,6 @@ namespace CarCallout
         Ped driver;
         private string[] carList = { "speedo", "speedo2", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
-        List<object> items = new List<object>();
         public ReverseCarCallout()
         {
 
@@ -38,8 +38,8 @@ namespace CarCallout
             driver.Task.CruiseWithVehicle(car, 12f, 1923);
             car.AttachBlip();
             driver.AttachBlip();
-            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.Firstname;
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 5000);
         }
@@ -47,33 +47,34 @@ namespace CarCallout
         {
             InitBlip();
             UpdateData();
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(Hash, Location);
-            dynamic playerData = Utilities.GetPlayerData();
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
-            string vehicleName = datacar.VehicleName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + vehicleName + "!");
+            VehicleData datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.Name;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
             //Driver Data
-            dynamic data = new ExpandoObject();
-            data.alcoholLevel = 0.10;
-            data.drugsUsed = new bool[] {false,false,true};
+            PedData data = new PedData();
+            data.BloodAlcoholLevel = 0.10;
+            PedData.Drugs[] drugs = data.UsedDrugs; //TODO FIX THIS
+            List<Item> items = data.Items;
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            object goodItem = new {
+            Item goodItem = new Item {
                 Name = name2,
                 IsIllegal = false
             };
             items.Add(goodItem);
-            data.items = items;
+            data.Items = items;
             Utilities.SetPedData(driver.NetworkId,data);
             
             //Car Data
-            dynamic vehicleData = new ExpandoObject();
-            vehicleData.registration = false;
+            VehicleData vehicleData = new VehicleData();
+            vehicleData.Registration = false;
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;

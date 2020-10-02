@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using FivePD.API;
+using FivePD.API.Utils;
 
 
 namespace CarCallout
@@ -18,7 +19,6 @@ namespace CarCallout
         private string[] carList = { "speedo", "speedo2", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
         private string[] badItemList = { "Beer Bottle", "Open Beer Can", "Wine Bottle", "Random Pills", "Needles"};
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
-        List<object> items = new List<object>();
 
         public RecklessDriver()
         {
@@ -40,8 +40,8 @@ namespace CarCallout
             driver.Task.CruiseWithVehicle(car, 25f, 525116);
             car.AttachBlip();
             driver.AttachBlip();
-            dynamic data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.Firstname;
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
             API.Wait(6000);
             DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 5000);
         }
@@ -53,36 +53,37 @@ namespace CarCallout
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash selectedHash = (VehicleHash) API.GetHashKey(cartype);
             car = await SpawnVehicle(selectedHash, Location);
-            driver = await SpawnPed(GetRandomPed(), Location + 2);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
-            dynamic playerData = Utilities.GetPlayerData();
+            PlayerData playerData = Utilities.GetPlayerData();
             string displayName = playerData.DisplayName;
-            dynamic datacar = await Utilities.GetVehicleData(car.NetworkId);
-            string vehicleName = datacar.VehicleName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is driving a " + vehicleName + "!");
+            VehicleData datacar = await Utilities.GetVehicleData(car.NetworkId);
+            string vehicleName = datacar.Name;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
             
             //Driver Data
-            dynamic data = new ExpandoObject();
-            data.alcoholLevel = 0.15;
+            PedData data = new PedData();
+            data.BloodAlcoholLevel = 0.15;
             Random random2 = new Random();
+            List<Item> items = data.Items;
             string name = badItemList[random2.Next(badItemList.Length)];
-            object badItem = new {
+            Item badItem = new Item {
                 Name = name,
                 IsIllegal = true
             };
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            object goodItem = new {
+            Item goodItem = new Item {
                 Name = name2,
                 IsIllegal = false
             };
             items.Add(badItem);
             items.Add(goodItem);
-            data.items = items;
+            data.Items = items;
             Utilities.SetPedData(driver.NetworkId,data);
             //Car Data
-            dynamic vehicleData = new ExpandoObject();
-            vehicleData.insurance = false;
+            VehicleData vehicleData = new VehicleData();
+            vehicleData.Insurance = false;
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
