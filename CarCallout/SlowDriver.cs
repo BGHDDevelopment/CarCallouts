@@ -77,7 +77,6 @@ namespace CarCallout
             };
             items.Add(goodItem);
             data.Items = items;
-            PedData.Drugs[] drugs = data.UsedDrugs; //TODO FIX THIS
             Utilities.SetPedData(driver.NetworkId,data);
             
             driver.AlwaysKeepTask = true;

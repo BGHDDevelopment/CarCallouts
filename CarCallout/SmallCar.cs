@@ -48,7 +48,6 @@ namespace CarCallout
             //Driver Data
             PedData data = new PedData();
             data.BloodAlcoholLevel = 0.07;
-            PedData.Drugs[] drugs = data.UsedDrugs; //TODO FIX THIS
             List<Item> items = data.Items;
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
