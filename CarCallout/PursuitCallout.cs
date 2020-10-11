@@ -78,7 +78,7 @@ namespace CarCallout
             //Driver Data
             PedData data = new PedData();
             data.BloodAlcoholLevel = 0.01;
-            List<Item> items = data.Items;
+            List<Item> items = new List<Item>();
             Item SMG = new Item {
                 Name = "SMG",
                 IsIllegal = true

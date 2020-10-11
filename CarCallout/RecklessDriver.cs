@@ -64,7 +64,7 @@ namespace CarCallout
             PedData data = new PedData();
             data.BloodAlcoholLevel = 0.15;
             Random random2 = new Random();
-            List<Item> items = data.Items;
+            List<Item> items = new List<Item>();
             string name = badItemList[random2.Next(badItemList.Length)];
             Item badItem = new Item {
                 Name = name,

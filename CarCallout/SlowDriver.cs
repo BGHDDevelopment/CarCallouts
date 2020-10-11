@@ -63,7 +63,7 @@ namespace CarCallout
             //Driver Data
             PedData data = new PedData();
             data.BloodAlcoholLevel = 0.05;
-            List<Item> items = data.Items;
+            List<Item> items = new List<Item>();
             Item Meth = new Item {
                 Name = "Bag of Meth",
                 IsIllegal = true
