@@ -6,7 +6,6 @@ using CitizenFX.Core.Native;
 using FivePD.API;
 using FivePD.API.Utils;
 
-
 namespace CarCallout
 {
 
@@ -15,7 +14,7 @@ namespace CarCallout
     {
         private Vehicle car;
         Ped driver, passenger, passenger2;
-
+        
         public VanPursuit()
         {
             Random rnd = new Random();
@@ -73,8 +72,10 @@ namespace CarCallout
             string displayName = playerData.DisplayName;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are armed and dangerous!");
             //Driver Data
+
             PedData data = new PedData();
-            List<Item> items = data.Items;
+            List<Item> items = new List<Item>();
+
             data.BloodAlcoholLevel = 0.01;
             Item Pistol = new Item {
                 Name = "Pistol",

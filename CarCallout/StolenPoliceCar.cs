@@ -55,7 +55,7 @@ namespace CarCallout
             PedData data = new PedData();
             Random random3 = new Random();
             string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            List<Item> items = data.Items;
+            List<Item> items = new List<Item>();
             Item goodItem = new Item {
                 Name = name2,
                 IsIllegal = false
