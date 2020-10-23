@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.17")]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.18")]
     public class RecklessDriver : Callout
     {
         private Vehicle car;

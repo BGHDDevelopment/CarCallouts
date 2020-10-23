@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
 
-    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.17")]
+    [CalloutProperties("Pursuit of Armed Suspects", "BGHDDevelopment", "0.0.18")]
     public class PursuitCallout : Callout
     {
         private Vehicle car;
