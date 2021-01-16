@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "1.0.0")]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;
@@ -33,19 +33,7 @@ namespace CarCallout
 
         public async override void OnStart(Ped player)
         {
-            base.OnStart(player);
-            driver.Task.CruiseWithVehicle(car, 12f, 1923);
-            car.AttachBlip();
-            driver.AttachBlip();
-            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 5000);
-        }
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
+            
             driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
@@ -77,9 +65,20 @@ namespace CarCallout
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
+            
+            base.OnStart(player);
+            driver.Task.CruiseWithVehicle(car, 12f, 1923);
+            car.AttachBlip();
+            driver.AttachBlip();
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Why is everyone driving backwards?", 5000);
         }
-        public override void OnCancelBefore()
+        public async override Task OnAccept()
         {
+            InitBlip();
+            UpdateData();
         }
         private void Notify(string message)
         {

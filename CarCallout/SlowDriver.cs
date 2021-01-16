@@ -10,13 +10,12 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "1.0.0")]
     public class SlowDriver : Callout
     {
         private Vehicle car;
         Ped driver;
         private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
-        List<object> items2 = new List<object>();
         private string[] carList = { "speedo", "speedo2", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
         public SlowDriver()
         {
@@ -35,24 +34,7 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            driver.Task.CruiseWithVehicle(car, 2f, 387);
-            car.AttachBlip();
-            driver.AttachBlip();
-            API.AddBlipForEntity(car.GetHashCode());
-            API.AddBlipForEntity(driver.GetHashCode());
-            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 5000);
-        }
-        
-        List<object> items = new List<object>();
-
-      
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
+            
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
@@ -87,11 +69,24 @@ namespace CarCallout
             VehicleData datacar = await Utilities.GetVehicleData(car.NetworkId);
             string vehicleName = datacar.Name;
             Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are driving a " + vehicleName + "!");
+            
+            driver.Task.CruiseWithVehicle(car, 2f, 387);
+            car.AttachBlip();
+            driver.AttachBlip();
+            API.AddBlipForEntity(car.GetHashCode());
+            API.AddBlipForEntity(driver.GetHashCode());
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 5000);
         }
-
-        public override void OnCancelBefore()
+        
+        public async override Task OnAccept()
         {
+            InitBlip();
+            UpdateData();
         }
+        
         private void Notify(string message)
         {
             API.BeginTextCommandThefeedPost("STRING");

@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Ambulance Car Callout", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Stolen Ambulance Car Callout", "BGHDDevelopment", "1.0.0")]
     public class StolenAmbul : Callout
     {
         private Vehicle car;
@@ -33,21 +33,7 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 30f);
-            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
-            driver.Task.FleeFrom(player);
-            car.AttachBlip();
-            driver.AttachBlip();
-            PlayerData playerData = Utilities.GetPlayerData();
-            string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
-            var pursuit = Pursuit.RegisterPursuit(driver);
-
-        }
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
+            
             driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Ambulance, Location,12);
             API.SetVehicleLights(car.GetHashCode(), 2);
@@ -71,11 +57,21 @@ namespace CarCallout
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
             
+            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 30f);
+            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
+            driver.Task.FleeFrom(player);
+            car.AttachBlip();
+            driver.AttachBlip();
+            PlayerData playerData = Utilities.GetPlayerData();
+            string displayName = playerData.DisplayName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
+            Pursuit.RegisterPursuit(driver);
         }
-        public override void OnCancelBefore()
+        public async override Task OnAccept()
         {
+            InitBlip();
+            UpdateData();
         }
-
         private void Notify(string message)
         {
             API.BeginTextCommandThefeedPost("STRING");

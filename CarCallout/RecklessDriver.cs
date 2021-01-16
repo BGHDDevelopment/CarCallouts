@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "1.0.0")]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
@@ -36,18 +36,6 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            driver.Task.CruiseWithVehicle(car, 25f, 525116);
-            car.AttachBlip();
-            driver.AttachBlip();
-            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 5000);
-        }
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
             VehicleHash selectedHash = (VehicleHash) API.GetHashKey(cartype);
@@ -86,6 +74,18 @@ namespace CarCallout
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
+            driver.Task.CruiseWithVehicle(car, 25f, 525116);
+            car.AttachBlip();
+            driver.AttachBlip();
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Lets go! Full speed ahead!", 5000);
+        }
+        public async override Task OnAccept()
+        {
+            InitBlip();
+            UpdateData();
         }
         public override void OnCancelBefore()
         {

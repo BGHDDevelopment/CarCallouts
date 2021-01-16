@@ -9,7 +9,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
 
-    [CalloutProperties("Pursuit of Armed Suspects (Van)", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Pursuit of Armed Suspects (Van)", "BGHDDevelopment", "1.0.0")]
     public class VanPursuit : Callout
     {
         private Vehicle car;
@@ -29,39 +29,8 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            PlayerData playerData = Utilities.GetPlayerData();
-            string displayName = playerData.DisplayName;
-            driver.Weapons.Give(WeaponHash.Pistol, 20, true, true);
-            passenger.Weapons.Give(WeaponHash.SMG, 150, true, true);
-            passenger2.Weapons.Give(WeaponHash.SMG, 150, true, true);
-            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 35f);
-            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
-            driver.Task.FleeFrom(player);
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are fleeing!");
-            car.AttachBlip();
-            driver.AttachBlip();
-            passenger.AttachBlip();
-            passenger2.AttachBlip();
-            API.Wait(6000);
-            passenger.Task.FightAgainst(player);
-            passenger2.Task.FightAgainst(player);
-            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.FirstName;
-            PedData data2 = await Utilities.GetPedData(passenger.NetworkId);
-            string firstname2 = data2.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 5000);
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~FIRE!", 5000);
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~DIE!", 5000);
-            var pursuit = Pursuit.RegisterPursuit(driver);
-        }
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
-            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
+            
+                        driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             passenger = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             passenger2 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             car = await SpawnVehicle(VehicleHash.Speedo, Location);
@@ -120,6 +89,37 @@ namespace CarCallout
             passenger.BlockPermanentEvents = true;
             passenger2.AlwaysKeepTask = true;
             passenger2.BlockPermanentEvents = true;
+            
+            driver.Weapons.Give(WeaponHash.Pistol, 20, true, true);
+            passenger.Weapons.Give(WeaponHash.SMG, 150, true, true);
+            passenger2.Weapons.Give(WeaponHash.SMG, 150, true, true);
+            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 35f);
+            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
+            driver.Task.FleeFrom(player);
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspects are fleeing!");
+            car.AttachBlip();
+            driver.AttachBlip();
+            passenger.AttachBlip();
+            passenger2.AttachBlip();
+            API.Wait(6000);
+            passenger.Task.FightAgainst(player);
+            passenger2.Task.FightAgainst(player);
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
+            PedData data4 = await Utilities.GetPedData(passenger.NetworkId);
+            string firstname2 = data4.FirstName;
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~I hate cops! Let me kill you!", 5000);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~FIRE!", 5000);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~DIE!", 5000);
+            Pursuit.RegisterPursuit(driver);
+        }
+        public async override Task OnAccept()
+        {
+            InitBlip();
+            UpdateData();
         }
         private void Notify(string message)
         {
@@ -132,9 +132,6 @@ namespace CarCallout
             API.BeginTextCommandPrint("STRING");
             API.AddTextComponentSubstringPlayerName(message);
             API.EndTextCommandPrint(duration, false);
-        }
-        public override void OnCancelBefore()
-        {
         }
     }
 }

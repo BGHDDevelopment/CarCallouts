@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Stolen Police Car (Hostage) Callout", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Stolen Police Car (Hostage) Callout", "BGHDDevelopment", "1.0.0")]
     public class StolenPoliceCarHostage : Callout
     {
         private Vehicle car;
@@ -33,32 +33,7 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 30f);
-            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
-            driver.Task.FleeFrom(player);
-            car.AttachBlip();
-            driver.AttachBlip();
-            police.AttachBlip();
-            police.Task.HandsUp(1000000);
-            PlayerData playerData = Utilities.GetPlayerData();
-            string displayName = playerData.DisplayName;
-            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
-            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Stay quiet and don't say anything!", 5000);
-            PedData data2 = await Utilities.GetPedData(police.NetworkId);
-            string firstname2 = data2.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname2 + "] ~s~Will do.... are you high?", 5000);
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Shut up!", 5000);
-            var pursuit = Pursuit.RegisterPursuit(driver);
-        }
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
+            
             driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             police = await SpawnPed(PedHash.Hwaycop01SMY, Location + 1);
             car = await SpawnVehicle(VehicleHash.Police, Location,12);
@@ -90,11 +65,34 @@ namespace CarCallout
             Utilities.ExcludeVehicleFromTrafficStop(car.NetworkId,true);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
+            
+            API.SetDriveTaskMaxCruiseSpeed(driver.GetHashCode(), 30f);
+            API.SetDriveTaskDrivingStyle(driver.GetHashCode(), 524852);
+            driver.Task.FleeFrom(player);
+            car.AttachBlip();
+            driver.AttachBlip();
+            police.AttachBlip();
+            police.Task.HandsUp(1000000);
+            PlayerData playerData = Utilities.GetPlayerData();
+            string displayName = playerData.DisplayName;
+            Notify("~r~[CarCallouts] ~y~Officer ~b~" + displayName + ",~y~ the suspect is fleeing!");
+            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
+            string firstname = data1.FirstName;
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Stay quiet and don't say anything!", 5000);
+            PedData data2 = await Utilities.GetPedData(police.NetworkId);
+            string firstname2 = data2.FirstName;
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname2 + "] ~s~Will do.... are you high?", 5000);
+            API.Wait(6000);
+            DrawSubtitle("~r~[" + firstname + "] ~s~Shut up!", 5000);
+            Pursuit.RegisterPursuit(driver);
         }
-        public override void OnCancelBefore()
+        public async override Task OnAccept()
         {
+            InitBlip();
+            UpdateData();
         }
-
         private void Notify(string message)
         {
             API.BeginTextCommandThefeedPost("STRING");
