@@ -2,7 +2,7 @@
 CarCallouts is a pack for the FiveM resource FivePD.
 
 # Install
-You may download and just use the callout pack via [GTAPoliceMods](https://gtapolicemods.com/files/file/838-group-callouts/).
+You may download and just use the callout pack via [GTAPoliceMods](https://gtapolicemods.com/files/file/843-car-callouts-11-callouts-one-sync-compatibility/).
 
 # Development
 While I am only updating this callout pack when I have extra time, any changes made by the community will be reviewed and merged. This project was created in [Rider](https://www.jetbrains.com/rider/).
