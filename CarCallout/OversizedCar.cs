@@ -8,7 +8,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "0.0.18")]
+    [CalloutProperties("Oversized Vehicle Callout", "BGHDDevelopment", "1.0.1")]
     public class OversizedCar : Callout
     {
         private Vehicle car;
@@ -28,17 +28,9 @@ namespace CarCallout
             ResponseCode = 2;
             StartDistance = 250f;
         }
-        public override void OnStart(Ped player)
+        public override async void OnStart(Ped player)
         {
             base.OnStart(player);
-            driver.Task.CruiseWithVehicle(car,15f, 525116);
-            car.AttachBlip();
-            driver.AttachBlip();
-        }
-        public async override Task OnAccept()
-        {
-            InitBlip();
-            UpdateData();
             driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             car = await SpawnVehicle(VehicleHash.Dump, Location,12);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
@@ -64,9 +56,14 @@ namespace CarCallout
             Utilities.SetVehicleData(car.NetworkId,vehicleData);
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
+            driver.Task.CruiseWithVehicle(car,15f, 525116);
+            car.AttachBlip();
+            driver.AttachBlip();
         }
-        public override void OnCancelBefore()
+        public async override Task OnAccept()
         {
+            InitBlip();
+            UpdateData();
         }
     }
 }

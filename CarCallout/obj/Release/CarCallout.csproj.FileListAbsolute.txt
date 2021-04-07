@@ -9,3 +9,14 @@ C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CitizenFX.Core.Cli
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\FivePD.net.dll
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\CitizenFX.Core.Client.xml
 C:\Users\USER\RiderProjects\CarCallout\CarCallout\bin\Release\FivePD.net.xml
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\bin\Release\CarCallouts.net.dll
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\bin\Release\CarCallouts.net.pdb
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\bin\Release\CitizenFX.Core.Client.dll
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\bin\Release\FivePD.net.dll
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\bin\Release\CitizenFX.Core.Client.xml
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\bin\Release\FivePD.net.xml
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\obj\Release\CarCallout.csprojAssemblyReference.cache
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\obj\Release\CarCallout.csproj.CoreCompileInputs.cache
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\obj\Release\CarCallout.csproj.CopyComplete
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\obj\Release\CarCallouts.net.dll
+C:\Users\steph\Desktop\Source\YouTubeLoadout\CarCallouts\CarCallout\obj\Release\CarCallouts.net.pdb

@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "1.0.0")]
+    [CalloutProperties("Reckless Driver Callout", "BGHDDevelopment", "1.0.1")]
     public class RecklessDriver : Callout
     {
         private Vehicle car;
@@ -86,9 +86,6 @@ namespace CarCallout
         {
             InitBlip();
             UpdateData();
-        }
-        public override void OnCancelBefore()
-        {
         }
         private void Notify(string message)
         {
