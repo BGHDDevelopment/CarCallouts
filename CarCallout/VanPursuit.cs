@@ -29,8 +29,7 @@ namespace CarCallout
         public async override void OnStart(Ped player)
         {
             base.OnStart(player);
-            
-                        driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
+            driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             passenger = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             passenger2 = await SpawnPed(RandomUtils.GetRandomPed(), Location + 1);
             car = await SpawnVehicle(VehicleHash.Speedo, Location);

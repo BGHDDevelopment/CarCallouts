@@ -33,7 +33,7 @@ namespace CarCallout
 
         public async override void OnStart(Ped player)
         {
-            
+            base.OnStart(player);
             driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             Random random = new Random();
             string cartype = carList[random.Next(carList.Length)];
@@ -66,7 +66,6 @@ namespace CarCallout
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
             
-            base.OnStart(player);
             driver.Task.CruiseWithVehicle(car, 12f, 1923);
             car.AttachBlip();
             driver.AttachBlip();
