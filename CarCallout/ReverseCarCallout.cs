@@ -10,7 +10,7 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "1.0.1")]
+    [CalloutProperties("Reverse Car Callout", "BGHDDevelopment", "1.1")]
     public class ReverseCarCallout : Callout
     {
         private Vehicle car;

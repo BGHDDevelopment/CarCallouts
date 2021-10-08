@@ -10,14 +10,12 @@ using FivePD.API.Utils;
 namespace CarCallout
 {
     
-    [CalloutProperties("Slow Driver Callout", "BGHDDevelopment", "1.1")]
-    public class SlowDriver : Callout
+    [CalloutProperties("Bus Pursuit", "BGHDDevelopment", "1.1")]
+    public class BusPursuit : Callout
     {
         private Vehicle car;
         Ped driver;
-        private string[] goodItemList = { "Open Soda Can", "Pack of Hotdogs", "Dog Food", "Empty Can", "Phone", "Cake", "Cup of Noodles", "Water Bottle", "Pack of Cards", "Outdated Insurance Card", "Pack of Pens", "Phone", "Tablet", "Computer", "Business Cards", "Taxi Business Card", "Textbooks", "Car Keys", "House Keys", "Keys", "Folder"};
-        private string[] carList = { "speedo", "speedo2", "stanier", "stinger", "stingergt", "stratum", "stretch", "taco", "tornado", "tornado2", "tornado3", "tornado4", "tourbus", "vader", "voodoo2", "dune5", "youga", "taxi", "tailgater", "sentinel2", "sentinel", "sandking2", "sandking", "ruffian", "rumpo", "rumpo2", "oracle2", "oracle", "ninef2", "ninef", "minivan", "gburrito", "emperor2", "emperor"};
-        public SlowDriver()
+        public BusPursuit()
         {
 
             Random rnd = new Random();
@@ -25,8 +23,8 @@ namespace CarCallout
             float offsetY = rnd.Next(100, 700);
 
             InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.GetOffsetPosition(new Vector3(offsetX, offsetY, 0))));
-            ShortName = "Slow Driver";
-            CalloutDescription = "A car is driving at very slow speeds causing traffic jams.";
+            ShortName = "Bus Pursuit";
+            CalloutDescription = "A bus has been stolen!";
             ResponseCode = 3;
             StartDistance = 250f;
         }
@@ -35,30 +33,9 @@ namespace CarCallout
         {
             base.OnStart(player);
             Random random = new Random();
-            string cartype = carList[random.Next(carList.Length)];
-            VehicleHash Hash = (VehicleHash) API.GetHashKey(cartype);
-            car = await SpawnVehicle(Hash, Location);
+            car = await SpawnVehicle(VehicleHash.Bus, Location,12);
             driver = await SpawnPed(RandomUtils.GetRandomPed(), Location + 2);
             driver.SetIntoVehicle(car, VehicleSeat.Driver);
-
-            //Driver Data
-            PedData data = new PedData();
-            data.BloodAlcoholLevel = 0.05;
-            List<Item> items = new List<Item>();
-            Item Meth = new Item {
-                Name = "Bag of Meth",
-                IsIllegal = true
-            };
-            items.Add(Meth);
-            Random random3 = new Random();
-            string name2 = goodItemList[random3.Next(goodItemList.Length)];
-            Item goodItem = new Item {
-                Name = name2,
-                IsIllegal = false
-            };
-            items.Add(goodItem);
-            data.Items = items;
-            Utilities.SetPedData(driver.NetworkId,data);
             
             driver.AlwaysKeepTask = true;
             driver.BlockPermanentEvents = true;
@@ -74,10 +51,6 @@ namespace CarCallout
             driver.AttachBlip();
             API.AddBlipForEntity(car.GetHashCode());
             API.AddBlipForEntity(driver.GetHashCode());
-            PedData data1 = await Utilities.GetPedData(driver.NetworkId);
-            string firstname = data1.FirstName;
-            API.Wait(6000);
-            DrawSubtitle("~r~[" + firstname + "] ~s~Is that a bird? Wait... I think it's a car...", 5000);
         }
         
         public async override Task OnAccept()
